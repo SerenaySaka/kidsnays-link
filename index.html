@@ -20,17 +20,31 @@
 
   <script src="cizim.js"></script>
   <script>
-    // ?t=... eklemesi tarayıcının eski kopyayı göstermesini engeller
-    fetch("links.json?t=" + Date.now())
-      .then(cevap => cevap.json())
-      .then(veri => {
-        sayfaCiz(veri, document.getElementById("sayfa"));
-        document.title = veri.baslik + " — Linkler";
-        document.body.style.background = veri.gecisli ? veri.arkaPlan2 : veri.arkaPlan;
-      })
-      .catch(() => {
-        document.getElementById("sayfa").innerHTML = "<p style='padding:40px'>Linkler yüklenemedi.</p>";
-      });
+    // Linkler doğrudan GitHub'dan okunur: panelden yayınladığın değişiklik
+    // GitHub Pages'in yeniden yayınlanmasını beklemeden ~1 dakikada görünür.
+    // GitHub'a ulaşılamazsa sitedeki links.json dosyası kullanılır.
+    const GITHUB = "https://api.github.com/repos/SerenaySaka/kidsnays-link/contents/links.json";
+
+    function cozumle(b64) {
+      const ikili = atob(b64.replace(/\n/g, ""));
+      return JSON.parse(new TextDecoder().decode(Uint8Array.from(ikili, c => c.charCodeAt(0))));
+    }
+
+    function goster(veri) {
+      sayfaCiz(veri, document.getElementById("sayfa"));
+      document.title = veri.baslik + " — Linkler";
+      document.body.style.background = veri.gecisli ? veri.arkaPlan2 : veri.arkaPlan;
+    }
+
+    fetch(GITHUB, { headers: { Accept: "application/vnd.github+json" } })
+      .then(c => { if (!c.ok) throw new Error(); return c.json(); })
+      .then(d => goster(cozumle(d.content)))
+      .catch(() =>
+        fetch("links.json?t=" + Date.now())
+          .then(c => c.json())
+          .then(goster)
+          .catch(() => { document.getElementById("sayfa").innerHTML = "<p style='padding:40px'>Linkler yüklenemedi.</p>"; })
+      );
   </script>
 </body>
 </html>
