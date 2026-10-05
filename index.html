@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kidsnays — Linkler</title>
+  <meta name="description" content="Kidsnays Children’s Concept Store bağlantıları">
+  <link rel="icon" href="https://kidsnays.shop/images/logo.png">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="stil.css">
+  <style>
+    html, body { margin: 0; height: 100%; }
+    * { box-sizing: border-box; }
+  </style>
+</head>
+<body>
+
+  <!-- Sayfa içeriği links.json dosyasından otomatik oluşur -->
+  <div id="sayfa" class="lt-sayfa"></div>
+
+  <script src="cizim.js"></script>
+  <script>
+    // ?t=... eklemesi tarayıcının eski kopyayı göstermesini engeller
+    fetch("links.json?t=" + Date.now())
+      .then(cevap => cevap.json())
+      .then(veri => {
+        sayfaCiz(veri, document.getElementById("sayfa"));
+        document.title = veri.baslik + " — Linkler";
+        document.body.style.background = veri.gecisli ? veri.arkaPlan2 : veri.arkaPlan;
+      })
+      .catch(() => {
+        document.getElementById("sayfa").innerHTML = "<p style='padding:40px'>Linkler yüklenemedi.</p>";
+      });
+  </script>
+</body>
+</html>

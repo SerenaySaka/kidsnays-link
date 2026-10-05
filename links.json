@@ -1,0 +1,26 @@
+{
+  "baslik": "Kidsnays",
+  "aciklama": "Children’s Concept Store · Çocuklar için özenle seçilmiş kıyafetler",
+  "logo": "https://kidsnays.shop/images/logo.png",
+  "arkaPlan": "#F4EDE5",
+  "arkaPlan2": "#F9DAD4",
+  "gecisli": true,
+  "yaziRengi": "#4A2E20",
+  "butonRengi": "#FFFFFF",
+  "butonYazi": "#4A2E20",
+  "vurguRengi": "#EE7C6F",
+  "butonStili": "dolgu",
+  "koseler": "yuvarlak",
+  "sosyal": {
+    "instagram": "https://instagram.com/kidsnays",
+    "tiktok": "",
+    "whatsapp": "",
+    "eposta": "info@kidsnays.shop"
+  },
+  "linkler": [
+    { "baslik": "Web sitemiz", "url": "https://kidsnays.shop", "ikon": "🛍️", "aktif": true, "vurgulu": true },
+    { "baslik": "Kışa özel %15 indirim", "url": "https://kidsnays.shop", "ikon": "❄️", "aktif": true, "vurgulu": false },
+    { "baslik": "Instagram", "url": "https://instagram.com/kidsnays", "ikon": "📸", "aktif": true, "vurgulu": false },
+    { "baslik": "WhatsApp’tan sipariş ver", "url": "https://wa.me/905000000000", "ikon": "💬", "aktif": true, "vurgulu": false }
+  ]
+}

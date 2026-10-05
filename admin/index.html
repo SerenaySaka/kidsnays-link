@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Link Paneli — Kidsnays</title>
+  <link rel="icon" href="https://kidsnays.shop/images/logo.png">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../stil.css">
+
+<style>
+/* =====================================================
+   ADMIN PANELİ TASARIMI
+   ===================================================== */
+:root { --kahve: #4A2E20; --kahve-acik: #7A5A48; --krem: #F4EDE5; --mercan: #EE7C6F; --yesil: #3F7D5C; --cizgi: #E6DCD1; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: "Nunito", sans-serif; color: var(--kahve); background: var(--krem); }
+button, input, select { font: inherit; color: inherit; }
+a { color: inherit; }
+button { cursor: pointer; border: 0; background: none; }
+
+.ust { display: flex; align-items: center; gap: 14px; padding: 14px 24px; background: #fff; border-bottom: 1px solid var(--cizgi); position: sticky; top: 0; z-index: 10; }
+.ust h1 { font-family: "Fredoka", sans-serif; font-size: 1.4rem; }
+.ust img { height: 40px; }
+.ust a { margin-left: auto; font-weight: 800; text-decoration: underline; }
+
+.duzen { display: grid; grid-template-columns: minmax(0, 1fr) 400px; gap: 28px; max-width: 1200px; margin: 0 auto; padding: 24px 24px 120px; align-items: start; }
+
+/* kartlar */
+.kart { background: #fff; border-radius: 22px; padding: 22px; margin-bottom: 18px; }
+.kart h2 { font-family: "Fredoka", sans-serif; font-size: 1.25rem; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+.kart p.not { font-size: .9rem; color: var(--kahve-acik); margin-bottom: 12px; }
+.kart p.not a { color: var(--kahve); font-weight: 800; }
+
+.satir { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.alan { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+.alan label { font-weight: 800; font-size: .88rem; }
+.alan input[type=text], .alan input[type=password], .alan input[type=url], .alan select {
+  height: 46px; padding: 0 14px; border: 1.5px solid var(--cizgi); border-radius: 12px; background: #FBF7F2; outline: none;
+}
+.alan input:focus, .alan select:focus { border-color: var(--kahve); background: #fff; }
+
+/* renk seçiciler */
+.renkler { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.renk { display: flex; align-items: center; gap: 10px; padding: 8px; border: 1.5px solid var(--cizgi); border-radius: 14px; }
+.renk input[type=color] { width: 42px; height: 42px; border: 0; border-radius: 10px; padding: 0; background: none; cursor: pointer; flex-shrink: 0; }
+.renk span { font-size: .82rem; font-weight: 800; line-height: 1.2; }
+.renk small { display: block; font-weight: 600; color: var(--kahve-acik); text-transform: uppercase; }
+.temalar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+.temalar button { width: 40px; height: 40px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 0 0 1.5px var(--cizgi); }
+.secenek { display: flex; flex-wrap: wrap; gap: 8px; }
+.secenek label { padding: 10px 16px; border: 1.5px solid var(--cizgi); border-radius: 99px; font-weight: 800; cursor: pointer; }
+.secenek input { display: none; }
+.secenek label:has(input:checked) { background: var(--kahve); border-color: var(--kahve); color: #fff; }
+.kutucuk { display: flex; align-items: center; gap: 8px; font-weight: 800; margin: 4px 0 12px; cursor: pointer; }
+.kutucuk input { width: 20px; height: 20px; accent-color: var(--kahve); }
+
+/* link listesi */
+.link-satir { display: grid; grid-template-columns: 56px 1fr auto; gap: 10px; padding: 14px; border: 1.5px solid var(--cizgi); border-radius: 16px; margin-bottom: 10px; background: #FBF7F2; }
+.link-satir.kapali { opacity: .5; }
+.link-satir input { height: 42px; padding: 0 12px; border: 1.5px solid var(--cizgi); border-radius: 10px; background: #fff; outline: none; width: 100%; }
+.link-satir input:focus { border-color: var(--kahve); }
+.link-satir .ikon-gir { text-align: center; font-size: 1.3rem; padding: 0; }
+.link-satir .yazilar { display: grid; gap: 8px; }
+.link-satir .araclar { display: flex; flex-direction: column; gap: 6px; }
+.link-satir .araclar button { width: 36px; height: 32px; border-radius: 8px; background: #fff; border: 1.5px solid var(--cizgi); font-weight: 800; }
+.link-satir .araclar button.sil { color: #C2413A; }
+.link-satir .anahtarlar { grid-column: 2 / 4; display: flex; gap: 18px; font-size: .88rem; }
+.link-satir .anahtarlar label { display: flex; align-items: center; gap: 6px; font-weight: 800; cursor: pointer; }
+.link-satir .anahtarlar input { width: 18px; height: 18px; accent-color: var(--kahve); }
+.ekle { width: 100%; padding: 14px; border: 2px dashed var(--kahve-acik); border-radius: 16px; font-weight: 800; color: var(--kahve-acik); }
+.ekle:hover { background: #FBF7F2; }
+
+/* önizleme (telefon görünümü) */
+.onizleme { position: sticky; top: 90px; }
+.onizleme h2 { font-family: "Fredoka", sans-serif; font-size: 1.1rem; text-align: center; margin-bottom: 10px; }
+.telefon { width: 100%; max-width: 360px; height: 680px; margin: 0 auto; border: 10px solid var(--kahve); border-radius: 44px; overflow: hidden; background: #fff; }
+.telefon .lt-sayfa { height: 100%; overflow-y: auto; padding-top: 36px; }
+.telefon .lt-baslik { font-size: 1.5rem; }
+
+/* alt çubuk */
+.alt-cubuk { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; display: flex; align-items: center; gap: 12px; padding: 14px 24px; background: #fff; box-shadow: 0 -8px 24px -14px rgba(74, 46, 32, .4); }
+.durum { flex: 1; font-weight: 800; font-size: .92rem; }
+.durum.iyi { color: var(--yesil); }
+.durum.kotu { color: #C2413A; }
+.btn { padding: 14px 24px; border-radius: 99px; font-weight: 800; }
+.btn.ana { background: var(--kahve); color: #fff; }
+.btn.ana:disabled { opacity: .5; cursor: not-allowed; }
+.btn.acik { background: var(--krem); }
+.baglanti-durumu { margin-left: auto; font-size: .82rem; font-weight: 800; padding: 4px 10px; border-radius: 99px; background: #FDE6E2; color: #C2413A; }
+.baglanti-durumu.bagli { background: #E3F1E8; color: var(--yesil); }
+
+@media (max-width: 900px) {
+  .duzen { grid-template-columns: 1fr; padding: 16px 16px 140px; }
+  .onizleme { position: static; order: -1; }
+  .telefon { height: 520px; }
+  .renkler { grid-template-columns: 1fr 1fr; }
+  .alt-cubuk { flex-wrap: wrap; padding: 12px 16px; }
+  .durum { flex-basis: 100%; }
+  .alt-cubuk .btn { flex: 1; }
+}
+@media (max-width: 520px) {
+  .satir { grid-template-columns: 1fr; gap: 0; }
+  .renkler { grid-template-columns: 1fr; }
+  .ust a { display: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="ust">
+  <img src="https://kidsnays.shop/images/logo.png" alt="">
+  <h1>Link Paneli</h1>
+  <a href="../" target="_blank">Link sayfasını aç ↗</a>
+</header>
+
+<div class="duzen">
+  <div>
+
+    <!-- =====================================================
+         1) GITHUB BAĞLANTISI
+         ===================================================== -->
+    <details class="kart" id="githubKart" open>
+      <summary style="list-style:none;cursor:pointer"><h2 style="margin:0">🔑 GitHub bağlantısı <span class="baglanti-durumu" id="baglantiDurumu">Bağlı değil</span></h2></summary>
+      <div style="margin-top:14px">
+        <p class="not">Değişiklikleri yayınlamak için bir kez GitHub anahtarı (token) girmen gerekiyor. Anahtar sadece bu cihazda saklanır, başka hiçbir yere gönderilmez. <a href="#nasil" onclick="document.getElementById('nasil').open=true">Anahtar nasıl alınır?</a></p>
+        <div class="satir">
+          <div class="alan"><label>GitHub kullanıcı adı</label><input type="text" id="kullanici" value="SerenaySaka"></div>
+          <div class="alan"><label>Depo (repo) adı</label><input type="text" id="repo" value="kidsnays-link"></div>
+        </div>
+        <div class="satir">
+          <div class="alan"><label>Dal (branch)</label><input type="text" id="dal" value="main"></div>
+          <div class="alan"><label>Anahtar (token)</label><input type="password" id="token" placeholder="github_pat_…" autocomplete="off"></div>
+        </div>
+        <label class="kutucuk"><input type="checkbox" id="hatirla" checked> Bu cihazda hatırla</label>
+        <button class="btn ana" id="baglan">Bağlan ve linkleri yükle</button>
+        <details id="nasil" style="margin-top:14px">
+          <summary style="cursor:pointer;font-weight:800">Anahtar nasıl alınır?</summary>
+          <ol style="margin:10px 0 0 20px;line-height:1.8;font-size:.92rem">
+            <li>GitHub'da sağ üstteki profil resmine tıkla → <b>Settings</b></li>
+            <li>Sol menünün en altında <b>Developer settings</b> → <b>Personal access tokens</b> → <b>Fine-grained tokens</b></li>
+            <li><b>Generate new token</b>'a bas, bir isim ver (örn. link-paneli)</li>
+            <li><b>Repository access</b>: <i>Only select repositories</i> → <b>kidsnays-link</b></li>
+            <li><b>Permissions</b> → <b>Contents</b>: <i>Read and write</i></li>
+            <li><b>Generate token</b>'a bas, çıkan kodu kopyalayıp buraya yapıştır</li>
+          </ol>
+        </details>
+      </div>
+    </details>
+
+    <!-- =====================================================
+         2) PROFİL
+         ===================================================== -->
+    <section class="kart">
+      <h2>👤 Profil</h2>
+      <div class="alan"><label>Başlık</label><input type="text" data-alan="baslik"></div>
+      <div class="alan"><label>Açıklama</label><input type="text" data-alan="aciklama"></div>
+      <div class="alan"><label>Logo yolu</label><input type="text" data-alan="logo" placeholder="https://kidsnays.shop/images/logo.png"></div>
+    </section>
+
+    <!-- =====================================================
+         3) RENKLER
+         ===================================================== -->
+    <section class="kart">
+      <h2>🎨 Renkler</h2>
+      <p class="not">Hazır temalar:</p>
+      <div class="temalar" id="temalar"></div>
+      <label class="kutucuk"><input type="checkbox" data-alan="gecisli"> Arka plan iki renkli geçişli olsun</label>
+      <div class="renkler">
+        <label class="renk"><input type="color" data-alan="arkaPlan"><span>Arka plan<small></small></span></label>
+        <label class="renk" id="ikinciRenk"><input type="color" data-alan="arkaPlan2"><span>Arka plan 2<small></small></span></label>
+        <label class="renk"><input type="color" data-alan="yaziRengi"><span>Yazı<small></small></span></label>
+        <label class="renk"><input type="color" data-alan="butonRengi"><span>Buton<small></small></span></label>
+        <label class="renk"><input type="color" data-alan="butonYazi"><span>Buton yazısı<small></small></span></label>
+        <label class="renk"><input type="color" data-alan="vurguRengi"><span>Öne çıkan link<small></small></span></label>
+      </div>
+    </section>
+
+    <!-- =====================================================
+         4) BUTON GÖRÜNÜMÜ
+         ===================================================== -->
+    <section class="kart">
+      <h2>🔘 Buton görünümü</h2>
+      <p class="not">Stil</p>
+      <div class="secenek" style="margin-bottom:14px">
+        <label><input type="radio" name="butonStili" value="dolgu">Dolgulu</label>
+        <label><input type="radio" name="butonStili" value="cizgili">Çizgili</label>
+        <label><input type="radio" name="butonStili" value="golgeli">Gölgeli</label>
+      </div>
+      <p class="not">Köşeler</p>
+      <div class="secenek">
+        <label><input type="radio" name="koseler" value="yuvarlak">Yuvarlak</label>
+        <label><input type="radio" name="koseler" value="hafif">Hafif yuvarlak</label>
+        <label><input type="radio" name="koseler" value="kare">Köşeli</label>
+      </div>
+    </section>
+
+    <!-- =====================================================
+         5) SOSYAL MEDYA
+         ===================================================== -->
+    <section class="kart">
+      <h2>📱 Sosyal medya ikonları</h2>
+      <p class="not">Boş bıraktığın ikon görünmez.</p>
+      <div class="satir">
+        <div class="alan"><label>Instagram adresi</label><input type="text" data-sosyal="instagram" placeholder="https://instagram.com/..."></div>
+        <div class="alan"><label>TikTok adresi</label><input type="text" data-sosyal="tiktok" placeholder="https://tiktok.com/@..."></div>
+      </div>
+      <div class="satir">
+        <div class="alan"><label>WhatsApp numarası</label><input type="text" data-sosyal="whatsapp" placeholder="905xxxxxxxxx"></div>
+        <div class="alan"><label>E-posta</label><input type="text" data-sosyal="eposta" placeholder="info@kidsnays.shop"></div>
+      </div>
+    </section>
+
+    <!-- =====================================================
+         6) LİNKLER
+         ===================================================== -->
+    <section class="kart">
+      <h2>🔗 Linkler</h2>
+      <p class="not">Soldaki kutuya bir emoji yazabilirsin (telefonda emoji klavyesi, bilgisayarda Windows + . tuşu).</p>
+      <div id="linkListesi"></div>
+      <button class="ekle" id="linkEkle">+ Yeni link ekle</button>
+    </section>
+  </div>
+
+  <!-- önizleme -->
+  <aside class="onizleme">
+    <h2>Canlı önizleme</h2>
+    <div class="telefon"><div id="onizleme" class="lt-sayfa"></div></div>
+  </aside>
+</div>
+
+<!-- alt çubuk -->
+<div class="alt-cubuk">
+  <span class="durum" id="durum">Linkler yükleniyor…</span>
+  <button class="btn acik" id="indir">JSON indir</button>
+  <button class="btn ana" id="yayinla" disabled>Yayınla</button>
+</div>
+
+
+<script src="../cizim.js"></script>
+<script>
+// =====================================================
+// DEĞİŞKENLER
+// =====================================================
+let veri = null;          // links.json içeriği
+let dosyaSha = null;      // GitHub'daki dosyanın sürüm kodu
+let kaydedilmedi = false;
+const $ = id => document.getElementById(id);
+
+const TEMALAR = [
+  { arkaPlan: "#F4EDE5", arkaPlan2: "#F9DAD4", yaziRengi: "#4A2E20", butonRengi: "#FFFFFF", butonYazi: "#4A2E20", vurguRengi: "#EE7C6F" },
+  { arkaPlan: "#F8E4C2", arkaPlan2: "#F3C8C3", yaziRengi: "#4A2E20", butonRengi: "#4A2E20", butonYazi: "#FFFFFF", vurguRengi: "#EE7C6F" },
+  { arkaPlan: "#D6E9F5", arkaPlan2: "#E6DCF3", yaziRengi: "#2B3A55", butonRengi: "#FFFFFF", butonYazi: "#2B3A55", vurguRengi: "#5AAEDD" },
+  { arkaPlan: "#D5EBE3", arkaPlan2: "#F8E4C2", yaziRengi: "#2F4F45", butonRengi: "#4E8B7A", butonYazi: "#FFFFFF", vurguRengi: "#E3A92F" },
+  { arkaPlan: "#4A2E20", arkaPlan2: "#7A5A48", yaziRengi: "#FFF3E4", butonRengi: "#FFF3E4", butonYazi: "#4A2E20", vurguRengi: "#E3A92F" },
+  { arkaPlan: "#E6DCF3", arkaPlan2: "#F9DAD4", yaziRengi: "#3E2D5C", butonRengi: "#FFFFFF", butonYazi: "#3E2D5C", vurguRengi: "#8360B8" }
+];
+
+
+// =====================================================
+// YARDIMCILAR
+// =====================================================
+function durumYaz(yazi, tur = "") {
+  $("durum").textContent = yazi;
+  $("durum").className = "durum " + tur;
+}
+
+// Türkçe karakterleri bozmadan base64'e çevirir (GitHub bu biçimi ister)
+function base64Yap(yazi) {
+  const baytlar = new TextEncoder().encode(yazi);
+  let ikili = "";
+  baytlar.forEach(b => ikili += String.fromCharCode(b));
+  return btoa(ikili);
+}
+function base64Coz(b64) {
+  const ikili = atob(b64.replace(/\n/g, ""));
+  return new TextDecoder().decode(Uint8Array.from(ikili, c => c.charCodeAt(0)));
+}
+
+function degisti() {
+  kaydedilmedi = true;
+  durumYaz("● Kaydedilmemiş değişiklikler var");
+  onizle();
+}
+
+function onizle() {
+  sayfaCiz(veri, $("onizleme"));
+  $("ikinciRenk").style.opacity = veri.gecisli ? 1 : .4;
+}
+
+
+// =====================================================
+// FORMU DOLDUR
+// =====================================================
+function formuDoldur() {
+  document.querySelectorAll("[data-alan]").forEach(el => {
+    const deger = veri[el.dataset.alan];
+    if (el.type === "checkbox") el.checked = !!deger;
+    else el.value = deger ?? "";
+    if (el.type === "color") el.nextElementSibling.querySelector("small").textContent = el.value;
+  });
+  document.querySelectorAll("[data-sosyal]").forEach(el => el.value = (veri.sosyal || {})[el.dataset.sosyal] || "");
+  document.querySelectorAll("input[name=butonStili]").forEach(r => r.checked = r.value === (veri.butonStili || "dolgu"));
+  document.querySelectorAll("input[name=koseler]").forEach(r => r.checked = r.value === (veri.koseler || "yuvarlak"));
+  linkleriCiz();
+  onizle();
+}
+
+function linkleriCiz() {
+  $("linkListesi").innerHTML = veri.linkler.map((l, i) => `
+    <div class="link-satir ${l.aktif === false ? "kapali" : ""}" data-no="${i}">
+      <input class="ikon-gir" data-l="ikon" value="${temiz(l.ikon || "")}" placeholder="🔗" maxlength="4" aria-label="Emoji">
+      <div class="yazilar">
+        <input data-l="baslik" value="${temiz(l.baslik)}" placeholder="Buton yazısı">
+        <input data-l="url" value="${temiz(l.url)}" placeholder="https://...">
+      </div>
+      <div class="araclar">
+        <button data-is="yukari" aria-label="Yukarı taşı" ${i === 0 ? "disabled" : ""}>↑</button>
+        <button data-is="asagi" aria-label="Aşağı taşı" ${i === veri.linkler.length - 1 ? "disabled" : ""}>↓</button>
+        <button data-is="sil" class="sil" aria-label="Sil">✕</button>
+      </div>
+      <div class="anahtarlar">
+        <label><input type="checkbox" data-l="aktif" ${l.aktif !== false ? "checked" : ""}> Görünür</label>
+        <label><input type="checkbox" data-l="vurgulu" ${l.vurgulu ? "checked" : ""}> Öne çıkar</label>
+      </div>
+    </div>`).join("");
+}
+
+
+// =====================================================
+// FORMDAKİ DEĞİŞİKLİKLER
+// =====================================================
+document.querySelectorAll("[data-alan]").forEach(el => el.addEventListener("input", () => {
+  veri[el.dataset.alan] = el.type === "checkbox" ? el.checked : el.value;
+  if (el.type === "color") el.nextElementSibling.querySelector("small").textContent = el.value;
+  degisti();
+}));
+document.querySelectorAll("[data-sosyal]").forEach(el => el.addEventListener("input", () => {
+  veri.sosyal = veri.sosyal || {};
+  veri.sosyal[el.dataset.sosyal] = el.value.trim();
+  degisti();
+}));
+document.querySelectorAll("input[name=butonStili], input[name=koseler]").forEach(r => r.addEventListener("change", () => {
+  veri[r.name] = r.value;
+  degisti();
+}));
+
+// link satırlarında yazı yazınca
+$("linkListesi").addEventListener("input", e => {
+  const satir = e.target.closest(".link-satir"); if (!satir) return;
+  const link = veri.linkler[satir.dataset.no];
+  const alan = e.target.dataset.l;
+  link[alan] = e.target.type === "checkbox" ? e.target.checked : e.target.value;
+  if (alan === "aktif") satir.classList.toggle("kapali", !e.target.checked);
+  degisti();
+});
+
+// yukarı / aşağı / sil
+$("linkListesi").addEventListener("click", e => {
+  const b = e.target.closest("[data-is]"); if (!b) return;
+  const i = Number(b.closest(".link-satir").dataset.no);
+  const l = veri.linkler;
+  if (b.dataset.is === "yukari" && i > 0) [l[i - 1], l[i]] = [l[i], l[i - 1]];
+  if (b.dataset.is === "asagi" && i < l.length - 1) [l[i + 1], l[i]] = [l[i], l[i + 1]];
+  if (b.dataset.is === "sil" && confirm(`"${l[i].baslik || "Bu link"}" silinsin mi?`)) l.splice(i, 1);
+  linkleriCiz();
+  degisti();
+});
+
+$("linkEkle").onclick = () => {
+  veri.linkler.push({ baslik: "Yeni link", url: "https://", ikon: "🔗", aktif: true, vurgulu: false });
+  linkleriCiz();
+  degisti();
+  const son = $("linkListesi").lastElementChild.querySelector("[data-l=baslik]");
+  son.focus(); son.select();
+};
+
+// hazır temalar
+$("temalar").innerHTML = TEMALAR.map((t, i) =>
+  `<button data-tema="${i}" style="background:linear-gradient(135deg, ${t.arkaPlan} 50%, ${t.butonRengi} 50%)" aria-label="Tema ${i + 1}"></button>`).join("");
+$("temalar").addEventListener("click", e => {
+  const b = e.target.closest("[data-tema]"); if (!b) return;
+  Object.assign(veri, TEMALAR[b.dataset.tema]);
+  formuDoldur();
+  degisti();
+});
+
+
+// =====================================================
+// GITHUB İLE OKUMA VE KAYDETME
+// =====================================================
+function ayarlar() {
+  return { kullanici: $("kullanici").value.trim(), repo: $("repo").value.trim(), dal: $("dal").value.trim() || "main", token: $("token").value.trim() };
+}
+function dosyaAdresi(a) {
+  return `https://api.github.com/repos/${a.kullanici}/${a.repo}/contents/links.json`;
+}
+
+async function baglan() {
+  const a = ayarlar();
+  if (!a.token) { durumYaz("Önce GitHub anahtarını (token) gir.", "kotu"); return; }
+  durumYaz("GitHub'a bağlanılıyor…");
+  try {
+    const cevap = await fetch(dosyaAdresi(a) + "?ref=" + a.dal, { headers: { Authorization: "Bearer " + a.token, Accept: "application/vnd.github+json" } });
+    if (cevap.status === 401) throw new Error("Anahtar (token) geçersiz ya da süresi dolmuş.");
+    if (cevap.status === 404) {
+      // dosya yoksa ilk kayıtta oluşturulur
+      dosyaSha = null;
+    } else if (!cevap.ok) {
+      throw new Error("GitHub hatası: " + cevap.status);
+    } else {
+      const d = await cevap.json();
+      dosyaSha = d.sha;
+      veri = JSON.parse(base64Coz(d.content));
+      formuDoldur();
+    }
+    if ($("hatirla").checked) localStorage.setItem("lt_ayar", JSON.stringify(a));
+    else localStorage.removeItem("lt_ayar");
+    $("baglantiDurumu").textContent = "Bağlı ✓";
+    $("baglantiDurumu").classList.add("bagli");
+    $("githubKart").open = false;
+    $("yayinla").disabled = false;
+    kaydedilmedi = false;
+    durumYaz("Bağlandı. Değişiklik yapıp Yayınla'ya bas.", "iyi");
+  } catch (hata) {
+    durumYaz(hata.message + " Kullanıcı adı, repo ve anahtarı kontrol et.", "kotu");
+  }
+}
+$("baglan").onclick = baglan;
+
+$("yayinla").onclick = async () => {
+  const a = ayarlar();
+  $("yayinla").disabled = true;
+  durumYaz("Yayınlanıyor…");
+  try {
+    const govde = {
+      message: "Linkler güncellendi (admin paneli)",
+      content: base64Yap(JSON.stringify(veri, null, 2)),
+      branch: a.dal
+    };
+    if (dosyaSha) govde.sha = dosyaSha;
+    const cevap = await fetch(dosyaAdresi(a), {
+      method: "PUT",
+      headers: { Authorization: "Bearer " + a.token, Accept: "application/vnd.github+json" },
+      body: JSON.stringify(govde)
+    });
+    if (cevap.status === 409) throw new Error("Dosya başka yerden değişmiş. Sayfayı yenileyip tekrar dene.");
+    if (cevap.status === 401 || cevap.status === 403) throw new Error("Anahtarın yazma izni yok. Contents: Read and write olmalı.");
+    if (!cevap.ok) throw new Error("GitHub hatası: " + cevap.status);
+    const d = await cevap.json();
+    dosyaSha = d.content.sha;
+    kaydedilmedi = false;
+    durumYaz("✓ Yayınlandı! Link sayfasında 1-2 dakika içinde görünür.", "iyi");
+  } catch (hata) {
+    durumYaz(hata.message, "kotu");
+  }
+  $("yayinla").disabled = false;
+};
+
+// bağlanmadan da düzenleyip dosyayı indirebilirsin
+$("indir").onclick = () => {
+  const dosya = new Blob([JSON.stringify(veri, null, 2)], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(dosya);
+  a.download = "links.json";
+  a.click();
+};
+
+// kaydetmeden çıkmaya çalışınca uyar
+window.addEventListener("beforeunload", e => { if (kaydedilmedi) { e.preventDefault(); e.returnValue = ""; } });
+
+
+// =====================================================
+// AÇILIŞ
+// =====================================================
+const kayitli = JSON.parse(localStorage.getItem("lt_ayar") || "null");
+if (kayitli) {
+  $("kullanici").value = kayitli.kullanici;
+  $("repo").value = kayitli.repo;
+  $("dal").value = kayitli.dal;
+  $("token").value = kayitli.token;
+}
+
+// önce herkese açık dosyayı oku, sonra kayıtlı anahtar varsa GitHub'a bağlan
+fetch("../links.json?t=" + Date.now())
+  .then(c => c.json())
+  .then(d => { veri = d; formuDoldur(); durumYaz("Linkler yüklendi. Yayınlamak için GitHub'a bağlan."); })
+  .catch(() => {
+    veri = { baslik: "Kidsnays", aciklama: "", logo: "https://kidsnays.shop/images/logo.png", arkaPlan: "#F4EDE5", arkaPlan2: "#F9DAD4", gecisli: true,
+             yaziRengi: "#4A2E20", butonRengi: "#FFFFFF", butonYazi: "#4A2E20", vurguRengi: "#EE7C6F", butonStili: "dolgu", koseler: "yuvarlak", sosyal: {}, linkler: [] };
+    formuDoldur();
+    durumYaz("links.json bulunamadı, boş sayfayla başlandı.");
+  })
+  .finally(() => { if (kayitli && kayitli.token) baglan(); });
+</script>
+</body>
+</html>

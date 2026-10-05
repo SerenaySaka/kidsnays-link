@@ -1,0 +1,68 @@
+/* =====================================================
+   LİNK SAYFASI TASARIMI
+   Renkler links.json dosyasından (ya da admin panelinden) gelir.
+   ===================================================== */
+.lt-sayfa {
+  --arka: #F4EDE5;
+  --arka2: #F4EDE5;
+  --yazi: #4A2E20;
+  --buton: #FFFFFF;
+  --buton-yazi: #4A2E20;
+  --vurgu: #EE7C6F;
+  --kose: 99px;
+
+  min-height: 100%;
+  padding: 48px 20px 40px;
+  background: linear-gradient(160deg, var(--arka), var(--arka2));
+  color: var(--yazi);
+  font-family: "Nunito", system-ui, sans-serif;
+  text-align: center;
+}
+.lt-icerik { max-width: 560px; margin: 0 auto; }
+
+/* üst kısım */
+.lt-logo {
+  width: 112px; height: 112px; margin: 0 auto 16px;
+  border-radius: 50%; background: #fff; overflow: hidden;
+  display: grid; place-items: center;
+  box-shadow: 0 10px 30px -12px rgba(0, 0, 0, .25);
+}
+.lt-logo img { width: 86%; height: 86%; object-fit: contain; }
+.lt-baslik { font-family: "Fredoka", sans-serif; font-weight: 700; font-size: 1.8rem; line-height: 1.1; margin: 0; }
+.lt-aciklama { margin: 8px auto 0; max-width: 40ch; opacity: .85; line-height: 1.5; }
+
+/* sosyal medya ikonları */
+.lt-sosyal { display: flex; justify-content: center; gap: 12px; margin: 20px 0 28px; }
+.lt-sosyal a { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; color: var(--yazi); background: rgba(255, 255, 255, .55); transition: transform .2s; }
+.lt-sosyal a:hover { transform: translateY(-3px); }
+.lt-sosyal svg { width: 22px; height: 22px; }
+
+/* link butonları */
+.lt-linkler { display: flex; flex-direction: column; gap: 14px; }
+.lt-link {
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+  min-height: 60px; padding: 14px 56px;
+  border-radius: var(--kose);
+  font-weight: 800; font-size: 1.02rem; text-decoration: none;
+  transition: transform .2s, box-shadow .2s;
+}
+.lt-link:hover { transform: translateY(-3px) scale(1.01); }
+.lt-link .lt-ikon { position: absolute; left: 18px; font-size: 1.4rem; }
+
+/* buton stilleri */
+.lt-sayfa.dolgu .lt-link { background: var(--buton); color: var(--buton-yazi); box-shadow: 0 8px 22px -14px rgba(0, 0, 0, .4); }
+.lt-sayfa.cizgili .lt-link { background: transparent; color: var(--yazi); border: 2px solid var(--yazi); }
+.lt-sayfa.golgeli .lt-link { background: var(--buton); color: var(--buton-yazi); border: 2px solid var(--yazi); box-shadow: 5px 5px 0 var(--yazi); }
+
+/* öne çıkan link */
+.lt-sayfa .lt-link.vurgulu { background: var(--vurgu); color: #fff; border-color: var(--vurgu); animation: lt-salla 3s ease-in-out infinite; }
+@keyframes lt-salla { 0%, 86%, 100% { transform: none; } 90% { transform: rotate(-2deg); } 95% { transform: rotate(2deg); } }
+
+.lt-alt { margin-top: 36px; font-size: .85rem; opacity: .7; }
+.lt-alt a { color: inherit; }
+
+@media (prefers-reduced-motion: reduce) {
+  .lt-link, .lt-sosyal a { transition: none; }
+  .lt-sayfa .lt-link.vurgulu { animation: none; }
+}
